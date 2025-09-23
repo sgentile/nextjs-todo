@@ -20,6 +20,11 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
+  {
+    rules: {
+      "@typescript-eslint/interface-with-generics": "off",
+    },
+  },
 ];
 
 export default eslintConfig;
