@@ -1,10 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../../auth/[...nextauth]/route';
 
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const session = await getServerSession(authOptions as unknown as any);
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     const { id } = await params; // ✅ Await params first
     const body = await request.json();
 

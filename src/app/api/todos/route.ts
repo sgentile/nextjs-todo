@@ -1,5 +1,7 @@
 import { QueryClient } from '@tanstack/react-query';
 import { Todo } from '../../../types/todo';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../auth/[...nextauth]/route';
 
 export const dynamic = "force-dynamic";
 
@@ -30,6 +32,11 @@ export async function prefetchTodos(queryClient: QueryClient) {
 
 export async function GET(request: Request) {
   try {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const session = await getServerSession(authOptions as unknown as any);
+    if (!session) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');

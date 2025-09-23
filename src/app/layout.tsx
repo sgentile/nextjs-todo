@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "../components/QueryProvider";
+import AuthProvider from "@/components/AuthProvider";
+import UserMenu from "@/components/UserMenu";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,9 +30,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-blue-50`}
       >
-        <QueryProvider>
-          {children}
-        </QueryProvider>
+        <AuthProvider>
+          <div className="min-h-screen flex flex-col">
+            <header className="sticky top-0 z-50 w-full border-b bg-white/70 backdrop-blur px-6 py-3 flex items-center justify-between">
+              <h1 className="text-lg font-semibold">NextJS Todo</h1>
+              <UserMenu />
+            </header>
+            <QueryProvider>
+              <div className="flex-1">{children}</div>
+            </QueryProvider>
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );

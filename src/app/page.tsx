@@ -3,7 +3,6 @@ import Posts from "../components/Posts";
 import PostsLoading from "../components/PostsLoading";
 import { fetchTodosServer } from "./api/todos/route";
 import { QueryClient, dehydrate, HydrationBoundary } from '@tanstack/react-query';
-
 interface HomeProps {
   searchParams: { page?: string };
 }
@@ -48,7 +47,7 @@ export default async function Home({ searchParams }: HomeProps) {
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <div className="font-sans grid items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+    <div className="font-sans grid items-center justify-items-center min-h-screen p-8 gap-16">
       <HydrationBoundary state={dehydratedState}>
         <Suspense fallback={<PostsLoading />}>
           <Posts initialPage={page} />
