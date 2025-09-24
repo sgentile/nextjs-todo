@@ -1,6 +1,7 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { QueryClient, dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import PostDetail from '../../../components/PostDetail';
+import { getSession } from '@/lib/auth';
 
 async function fetchPost(id: string) {
   try {
@@ -22,7 +23,12 @@ async function fetchPost(id: string) {
 }
 
 export default async function PostPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params; // ✅ Await params first
+  const { id } = await params;
+  const session = await getSession();
+  if (!session) {
+    redirect(`/login?callbackUrl=/post/${id}`);
+  }
+
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
